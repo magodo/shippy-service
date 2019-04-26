@@ -9,6 +9,7 @@ require (
 	github.com/Shopify/sarama v1.22.0 // indirect
 	github.com/beorn7/perks v1.0.0 // indirect
 	github.com/golang/protobuf v1.3.1
+	github.com/magodo/shippy-service/vessel v0.0.0-20190426020448-f938ba71be70
 	github.com/micro/go-grpc v1.0.1
 	github.com/micro/go-micro v1.1.0
 	github.com/prometheus/common v0.3.0 // indirect

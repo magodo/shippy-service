@@ -749,6 +749,8 @@ github.com/lyft/protoc-gen-validate v0.0.13/go.mod h1:XbGvPuh87YZc5TdIa2/I4pLk0Q
 github.com/lyft/protoc-gen-validate v0.0.14 h1:xbdDVIHd0Xq5Bfzu+8JR9s7mFmJPMvNLmfGhgcHJdFU=
 github.com/lyft/protoc-gen-validate v0.0.14/go.mod h1:XbGvPuh87YZc5TdIa2/I4pLk0QoUACkjt2znoq26NVQ=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
+github.com/magodo/shippy-service/vessel v0.0.0-20190426020448-f938ba71be70 h1:W4+HLqH6KTGa2doPNsdvwFf57jwGpr5mNlq6yB3tKr4=
+github.com/magodo/shippy-service/vessel v0.0.0-20190426020448-f938ba71be70/go.mod h1:j13O7+oVkiuWn2OGmqt4z5e0HQsjKpY8Bl6eGws0aVk=
 github.com/mattbaird/elastigo v0.0.0-20170123220020-2fe47fd29e4b h1:v29yPGHhOqw7VHEnTeQFAth3SsBrmwc8JfuhNY0G34k=
 github.com/mattbaird/elastigo v0.0.0-20170123220020-2fe47fd29e4b/go.mod h1:5MWrJXKRQyhQdUCF+vu6U5c4nQpg70vW3eHaU0/AYbU=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=

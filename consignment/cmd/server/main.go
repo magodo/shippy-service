@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	pb "github.com/magodo/shippy-service/consignment/proto/consignment"
+	vesselPb "github.com/magodo/shippy-service/vessel/proto/vessel"
 	"github.com/micro/go-grpc"
 	"github.com/micro/go-micro"
 )
@@ -40,13 +41,27 @@ func (repo *Repository) GetAll() []*pb.Consignment {
 // in the generated code itself for the exact method signatures etc
 // to give you a better idea.
 type service struct {
-	repo repository
+	repo         repository
+	vesselClient vesselPb.VesselService
 }
 
 // CreateConsignment - we created just one method on our service,
 // which is a create method, which takes a context and a request as an
 // argument, these are handled by the gRPC server.
 func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, resp *pb.Response) error {
+	// find a vessel to ship the consignment
+	vesselResp, err := s.vesselClient.FindAvailable(ctx, &vesselPb.Specification{
+		MaxWeight: req.Weight,
+		Capacity:  int32(len(req.Containers)),
+	})
+	if err != nil {
+		return err
+	}
+	log.Printf("Found vessel: %s\n", vesselResp.Vessel.Name)
+
+	// use the got vessel id for creating consignment
+	req.VesselId = vesselResp.Vessel.Id
+
 	// Save our consignment
 	consignment, err := s.repo.Create(req)
 	if err != nil {
@@ -73,7 +88,8 @@ func main() {
 	srv.Init()
 
 	repo := &Repository{}
-	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo})
+	vesselClient := vesselPb.NewVesselService("shippy.vessel.service", srv.Client())
+	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselClient})
 
 	if err := srv.Run(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
