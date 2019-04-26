@@ -1,0 +1,8 @@
+FROM alpine:latest
+
+RUN mkdir /app
+WORKDIR /app
+ADD consignment-cli /app/consignment-cli
+ADD cmd/cli/consignment.json /app/consignment.json
+
+CMD ["/app/consignment-cli"]

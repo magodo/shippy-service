@@ -1,0 +1,4 @@
+consignment-service
+consignment-cli
+**/consignment.pb.go
+**/consignment.micro.go
