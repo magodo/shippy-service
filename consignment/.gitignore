@@ -2,3 +2,4 @@ consignment-service
 consignment-cli
 **/consignment.pb.go
 **/consignment.micro.go
+go-pkg

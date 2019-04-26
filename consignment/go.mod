@@ -14,8 +14,6 @@ require (
 	github.com/prometheus/common v0.3.0 // indirect
 	github.com/prometheus/procfs v0.0.0-20190416084830-8368d24ba045 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
-	go.etcd.io/bbolt v1.3.2 // indirect
-	go.opencensus.io v0.20.2 // indirect
 	golang.org/x/crypto v0.0.0-20190418165655-df01cb2cc480 // indirect
 	golang.org/x/exp v0.0.0-20190419195159-b8972e603456 // indirect
 	golang.org/x/image v0.0.0-20190417020941-4e30a6eb7d9a // indirect
