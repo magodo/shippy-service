@@ -5,4 +5,4 @@ WORKDIR /app
 ADD consignment-cli /app/consignment-cli
 ADD cmd/cli/consignment.json /app/consignment.json
 
-CMD ["/app/consignment-cli"]
+CMD ["/app/consignment-cli", "--json", "/app/consignment.json"]

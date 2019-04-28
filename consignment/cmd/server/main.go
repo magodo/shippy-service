@@ -7,7 +7,6 @@ import (
 
 	pb "github.com/magodo/shippy-service/consignment/proto/consignment"
 	vesselPb "github.com/magodo/shippy-service/vessel/proto/vessel"
-	"github.com/micro/go-grpc"
 	"github.com/micro/go-micro"
 )
 
@@ -47,7 +46,7 @@ type service struct {
 
 // CreateConsignment - we created just one method on our service,
 // which is a create method, which takes a context and a request as an
-// argument, these are handled by the gRPC server.
+// argument, these are handled by the rpc server.
 func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, resp *pb.Response) error {
 	// find a vessel to ship the consignment
 	vesselResp, err := s.vesselClient.FindAvailable(ctx, &vesselPb.Specification{
@@ -82,7 +81,7 @@ func (s *service) GetConsignments(ctx context.Context, req *pb.GetRequest, resp 
 
 func main() {
 
-	srv := grpc.NewService(
+	srv := micro.NewService(
 		micro.Name("shippy.consignment.service"),
 	)
 	srv.Init()

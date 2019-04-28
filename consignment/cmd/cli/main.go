@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"os"
 
 	"context"
 
 	pb "github.com/magodo/shippy-service/consignment/proto/consignment"
-	"github.com/micro/go-grpc"
+	"github.com/micro/cli"
 	"github.com/micro/go-micro"
 )
 
@@ -28,15 +27,24 @@ func parseFile(file string) (*pb.Consignment, error) {
 }
 
 func main() {
-	service := grpc.NewService(micro.Name("shippy.consignment.cli"))
-	service.Init()
-	client := pb.NewShippingService("shippy.consignment.service", service.Client())
+	service := micro.NewService(
+		micro.Flags(
+			cli.StringFlag{
+				Name:  "json",
+				Usage: "json file of consignment to create",
+			},
+		),
+		micro.Name("shippy.consignment.cli"),
+	)
 
-	// Contact the server and print out its response.
-	file := defaultFilename
-	if len(os.Args) > 1 {
-		file = os.Args[1]
-	}
+	var file string
+	service.Init(
+		micro.Action(func(c *cli.Context) {
+			file = c.String("json")
+		}),
+	)
+
+	client := pb.NewShippingService("shippy.consignment.service", service.Client())
 
 	consignment, err := parseFile(file)
 
