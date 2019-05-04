@@ -1,0 +1,8 @@
+FROM alpine:latest
+
+RUN mkdir /app
+WORKDIR /app
+ADD user-cli /app/user-cli
+
+#CMD ["/app/user-cli", "--name", "${USER_NAME:-foo_name}", "--password", "${USER_PASSWORD:-foo_password}", "--email", "${USER_EMAIL:-foo_email}", "--company", "${USER_COMPANY:-foo_company}"]
+CMD /app/user-cli --name "${USER_NAME:-foo_user}" --password "${USER_PASSWORD:-foo_password}" --email "${USER_EMAIL:-foo_email}" --company "${USER_COMPANY:-foo_company}"
