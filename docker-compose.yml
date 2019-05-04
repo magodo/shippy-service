@@ -17,21 +17,40 @@ services:
   consignment-service:
     image: shippy-service-consignment
     ports:
-      - "50051:50051"
+      - "50051"
     environment:
-      - MICRO_SERVER_ADDRESS=:50051
-      - MICRO_REGISTRY=consul
-      - MICRO_REGISTRY_ADDRESS=dev-consul
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+      DB_HOST: "mongodb://datastore:27017"
     depends_on:
       - consul
+      - datastore
+
+  consignment-client:
+    image: shippy-cli-consignment
+    environment:
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+    depends_on:
+      - consul
+      - datastore
+      - consignment-service
 
   vessel-service:
     image: shippy-service-vessel
     ports:
-      - "50052:50051"
+      - "50051"
     environment:
-      - MICRO_SERVER_ADDRESS=:50051
-      - MICRO_REGISTRY=consul
-      - MICRO_REGISTRY_ADDRESS=dev-consul
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+      DB_HOST: "mongodb://datastore:27017"
     depends_on:
       - consul
+      - datastore
+
+  datastore:
+    image: mongo
+    ports:
+      - "27017"
