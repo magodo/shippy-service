@@ -10,6 +10,7 @@ import (
 	pb "github.com/magodo/shippy-service/consignment/proto/consignment"
 	"github.com/micro/cli"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/metadata"
 )
 
 const (
@@ -33,14 +34,22 @@ func main() {
 				Name:  "json",
 				Usage: "json file of consignment to create",
 			},
+			cli.StringFlag{
+				Name:  "token",
+				Usage: "authorization token",
+			},
 		),
 		micro.Name("shippy.consignment.cli"),
 	)
 
-	var file string
+	var (
+		file  string
+		token string
+	)
 	service.Init(
 		micro.Action(func(c *cli.Context) {
 			file = c.String("json")
+			token = c.String("token")
 		}),
 	)
 
@@ -52,13 +61,14 @@ func main() {
 		log.Fatalf("Could not parse file: %v", err)
 	}
 
-	r, err := client.CreateConsignment(context.Background(), consignment)
+	ctx := metadata.NewContext(context.Background(), metadata.Metadata{"Token": token})
+	r, err := client.CreateConsignment(ctx, consignment)
 	if err != nil {
 		log.Fatalf("Could not greet: %v", err)
 	}
 	log.Printf("Created: %t", r.Created)
 
-	r, err = client.GetConsignments(context.Background(), &pb.GetRequest{})
+	r, err = client.GetConsignments(ctx, &pb.GetRequest{})
 	if err != nil {
 		log.Fatalf("Could not get all consignments: %v", err)
 	}

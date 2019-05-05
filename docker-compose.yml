@@ -24,18 +24,19 @@ services:
       MICRO_REGISTRY: "consul"
       MICRO_REGISTRY_ADDRESS: "dev-consul"
       DB_HOST: "mongodb://datastore:27017"
+      ENABLE_AUTH: ${ENABLE_AUTH}
     depends_on:
       - consul
       - datastore
+      #- vessel-service
 
   consignment-client:
     image: shippy-cli-consignment
     environment:
       MICRO_REGISTRY: "consul"
       MICRO_REGISTRY_ADDRESS: "dev-consul"
+      USER_TOKEN: ${USER_TOKEN}
     depends_on:
-      - consul
-      - datastore
       - consignment-service
 
   vessel-service:
