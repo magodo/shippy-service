@@ -61,6 +61,17 @@ func main() {
 				log.Println(v)
 			}
 
+			authResp, err := client.Auth(
+				context.Background(),
+				&pb.User{
+					Email:    email,
+					Password: password,
+				})
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Your access token: ", authResp.Token)
+
 			os.Exit(0)
 		}),
 	)

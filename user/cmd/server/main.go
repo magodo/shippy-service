@@ -26,7 +26,7 @@ func main() {
 
 	srv.Init()
 
-	pb.RegisterUserServiceHandler(srv.Server(), &internal.Service{Repo: repo})
+	pb.RegisterUserServiceHandler(srv.Server(), &internal.Service{Repo: repo, TokenService: &internal.TokenService{}})
 
 	if err := srv.Run(); err != nil {
 		log.Fatal(err)

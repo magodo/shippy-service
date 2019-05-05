@@ -2,8 +2,10 @@ package internal
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/magodo/shippy-service/user/proto/user"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
@@ -30,15 +32,31 @@ func (srv *Service) GetAll(ctx context.Context, req *pb.Request, res *pb.Respons
 }
 
 func (srv *Service) Auth(ctx context.Context, req *pb.User, res *pb.Token) error {
-	_, err := srv.Repo.GetByEmailAndPassword(req)
+	log.Printf("Logging in with: email: %s, password: %s", req.Email, req.Password)
+	user, err := srv.Repo.GetByEmail(req.Email)
 	if err != nil {
 		return err
 	}
-	res.Token = "testingabc"
+	log.Println(user)
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		return err
+	}
+	token, err := srv.TokenService.Encode(user)
+	if err != nil {
+		return err
+	}
+	res.Token = token
 	return nil
 }
 
 func (srv *Service) Create(ctx context.Context, req *pb.User, res *pb.Response) error {
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	req.Password = string(hashed)
 	if err := srv.Repo.Create(req); err != nil {
 		return err
 	}
