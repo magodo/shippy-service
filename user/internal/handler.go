@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"log"
 
 	pb "github.com/magodo/shippy-service/user/proto/user"
@@ -65,5 +66,15 @@ func (srv *Service) Create(ctx context.Context, req *pb.User, res *pb.Response) 
 }
 
 func (srv *Service) ValidateToken(ctx context.Context, req *pb.Token, res *pb.Token) error {
+	claims, err := srv.TokenService.Decode(req.Token)
+	if err != nil {
+		return err
+	}
+
+	if claims.User.Id == "" {
+		return errors.New("invalid user")
+	}
+
+	res.Valid = true
 	return nil
 }
