@@ -60,6 +60,8 @@ services:
       MICRO_SERVER_ADDRESS: ":50051"
       MICRO_REGISTRY: "consul"
       MICRO_REGISTRY_ADDRESS: "dev-consul"
+      MICRO_BROKER: "nats"
+      MICRO_BROKER_ADDRESS: "nats:4222"
       DB_HOST: "database"
       DB_NAME: "postgres"
       DB_USER: ${PG_USER}
@@ -67,6 +69,21 @@ services:
     depends_on:
       - consul
       - database
+      - nats
+
+  email-service:
+    image: shippy-service-email
+    ports:
+      - "50051"
+    environment:
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+      MICRO_BROKER: "nats"
+      MICRO_BROKER_ADDRESS: "nats:4222"
+    depends_on:
+      - consul
+      - nats
 
   user-client:
     image: shippy-cli-user
@@ -89,3 +106,9 @@ services:
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+  nats:
+    image: nats
+    ports:
+      - 4222
+      - 8222:8222

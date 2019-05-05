@@ -23,26 +23,31 @@ const (
 
 func main() {
 
+	// connect to datastore and prepare repo
 	dbHost := defaultDBHost
 	if envDBHost, ok := os.LookupEnv("DB_HOST"); ok {
 		dbHost = envDBHost
 	}
-	client, err := internal.CreateClient(dbHost)
+	mongoClient, err := internal.CreateClient(dbHost)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Disconnect(context.Background())
-	consignmentCollection := client.Database("shippy").Collection("consignments")
+	defer mongoClient.Disconnect(context.Background())
+	consignmentCollection := mongoClient.Database("shippy").Collection("consignments")
 	repo := &internal.Repository{Collection: consignmentCollection}
 
+	// prepare vessel client
+	vesselClient := vesselPb.NewVesselService("shippy.vessel.service", client.DefaultClient)
+
+	// prepare service
 	srv := micro.NewService(
 		micro.Name("shippy.consignment.service"),
 		micro.WrapHandler(AuthWrapper),
 	)
 	srv.Init()
-	vesselClient := vesselPb.NewVesselService("shippy.vessel.service", srv.Client())
 	pb.RegisterShippingServiceHandler(srv.Server(), &internal.Handler{Repo: repo, VesselClient: vesselClient})
 
+	// run
 	if err := srv.Run(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

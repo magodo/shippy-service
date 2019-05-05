@@ -6,12 +6,14 @@ import (
 	"log"
 
 	pb "github.com/magodo/shippy-service/user/proto/user"
+	"github.com/micro/go-micro"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
 	Repo         Repository
 	TokenService Authable
+	micro.Publisher
 }
 
 func (s *Service) Get(ctx context.Context, req *pb.User, resp *pb.Response) error {
@@ -62,6 +64,13 @@ func (srv *Service) Create(ctx context.Context, req *pb.User, res *pb.Response) 
 		return err
 	}
 	res.User = req
+
+	// publish creation event
+	log.Println("publish event")
+	if err := srv.Publish(context.Background(), req); err != nil {
+		return err
+	}
+
 	return nil
 }
 

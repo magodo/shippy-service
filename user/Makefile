@@ -3,7 +3,7 @@ server:
 	protoc -I . --go_out=. \
 		--micro_out=. \
 		proto/user/user.proto
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o user-service cmd/server/main.go
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o user-service cmd/server/*
 	docker build -t shippy-service-user -f ./build/package/Dockerfile.server .
 
 .PHONY: client
