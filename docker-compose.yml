@@ -28,7 +28,7 @@ services:
     depends_on:
       - consul
       - datastore
-      #- vessel-service
+      - vessel-service
 
   consignment-client:
     image: shippy-cli-consignment
@@ -112,3 +112,12 @@ services:
     ports:
       - 4222
       - 8222:8222
+
+  api:
+    command: api --handler=rpc --namespace=shippy
+    image: microhq/micro
+    ports:
+      - 8080:8080
+    environment:
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"

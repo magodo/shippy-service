@@ -47,7 +47,7 @@ func main() {
 	createDummyData(repo)
 
 	srv := micro.NewService(
-		micro.Name("shippy.vessel.service"),
+		micro.Name("shippy.srv.vessel"),
 	)
 	srv.Init()
 	pb.RegisterVesselServiceHandler(srv.Server(), &internal.Handler{Repo: repo})

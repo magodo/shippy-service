@@ -26,7 +26,7 @@ func main() {
 
 	// prepare service
 	srv := micro.NewService(
-		micro.Name("go.micro.srv.user"),
+		micro.Name("shippy.srv.user"),
 		micro.Version("latest"),
 	)
 

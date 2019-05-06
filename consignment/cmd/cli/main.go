@@ -39,7 +39,6 @@ func main() {
 				Usage: "authorization token",
 			},
 		),
-		micro.Name("shippy.consignment.cli"),
 	)
 
 	var (
@@ -53,7 +52,7 @@ func main() {
 		}),
 	)
 
-	client := pb.NewShippingService("shippy.consignment.service", service.Client())
+	client := pb.NewShippingService("shippy.srv.consignment", service.Client())
 
 	consignment, err := parseFile(file)
 

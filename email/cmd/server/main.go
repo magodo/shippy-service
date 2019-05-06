@@ -20,7 +20,7 @@ func (s *subscriber) Process(ctx context.Context, req *pb.User) error {
 
 func main() {
 	srv := micro.NewService(
-		micro.Name("go.micro.srv.email"),
+		micro.Name("shippy.srv.email"),
 	)
 
 	srv.Init()

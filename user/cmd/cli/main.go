@@ -32,7 +32,7 @@ func main() {
 		),
 	)
 
-	client := pb.NewUserService("go.micro.srv.user", service.Client())
+	client := pb.NewUserService("shippy.srv.user", service.Client())
 
 	service.Init(
 		micro.Action(func(c *cli.Context) {
