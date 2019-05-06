@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+  consignment-client:
+    image: shippy-cli-consignment
+    environment:
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+      USER_TOKEN: ${USER_TOKEN}
+
+  user-client:
+    image: shippy-cli-user
+    environment:
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+      USER_NAME: "foo"
+

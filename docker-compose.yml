@@ -14,6 +14,26 @@ services:
     container_name: dev-consul
     environment:
       - CONSUL_BIND_INTERFACE=eth0
+
+  datastore:
+    image: mongo
+    ports:
+      - "27017"
+
+  database:
+    image: postgres
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+  nats:
+    image: nats
+    ports:
+      - 4222
+      - 8222:8222
+
   
   consignment-service:
     image: shippy-service-consignment
@@ -29,15 +49,6 @@ services:
       - consul
       - datastore
       - vessel-service
-
-  consignment-client:
-    image: shippy-cli-consignment
-    environment:
-      MICRO_REGISTRY: "consul"
-      MICRO_REGISTRY_ADDRESS: "dev-consul"
-      USER_TOKEN: ${USER_TOKEN}
-    depends_on:
-      - consignment-service
 
   vessel-service:
     image: shippy-service-vessel
@@ -85,39 +96,20 @@ services:
       - consul
       - nats
 
-  user-client:
-    image: shippy-cli-user
-    environment:
-      MICRO_REGISTRY: "consul"
-      MICRO_REGISTRY_ADDRESS: "dev-consul"
-      USER_NAME: "foo"
-    depends_on:
-      - user-service
-
-  datastore:
-    image: mongo
-    ports:
-      - "27017"
-
-  database:
-    image: postgres
-    ports:
-      - "5432"
-    environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-
-  nats:
-    image: nats
-    ports:
-      - 4222
-      - 8222:8222
-
   api:
     command: api --handler=rpc --namespace=shippy
     image: microhq/micro
     ports:
       - 8080:8080
+    environment:
+      MICRO_REGISTRY: "consul"
+      MICRO_REGISTRY_ADDRESS: "dev-consul"
+
+  web:
+    command: web
+    image: microhq/micro
+    ports:
+      - 8082:8082
     environment:
       MICRO_REGISTRY: "consul"
       MICRO_REGISTRY_ADDRESS: "dev-consul"

@@ -9,6 +9,10 @@ The system is organized via docker compose. Run following code to launch:
     $ # wait a second, then launch the remaining parts
     $ docker-compose -p shippy up -d
 
+# How to start client for testing
+
+    $ docker-compose -f docker-compose-cli.yml up -d
+
 # Send request to micro api
 
 	$ # create user
