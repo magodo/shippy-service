@@ -16,7 +16,7 @@ type Handler struct {
 // CreateConsignment - we created just one method on our service,
 // which is a create method, which takes a context and a request as an
 // argument, these are handled by the rpc server.
-func (s *Handler) CreateConsignment(ctx context.Context, req *pb.Consignment, resp *pb.Response) error {
+func (s *Handler) Create(ctx context.Context, req *pb.Consignment, resp *pb.Response) error {
 	// find a vessel to ship the consignment
 	vesselResp, err := s.VesselClient.FindAvailable(ctx, &vesselPb.Specification{
 		MaxWeight: req.Weight,

@@ -45,7 +45,7 @@ func main() {
 		micro.WrapHandler(AuthWrapper),
 	)
 	srv.Init()
-	pb.RegisterShippingServiceHandler(srv.Server(), &internal.Handler{Repo: repo, VesselClient: vesselClient})
+	pb.RegisterConsignmentServiceHandler(srv.Server(), &internal.Handler{Repo: repo, VesselClient: vesselClient})
 
 	// run
 	if err := srv.Run(); err != nil {

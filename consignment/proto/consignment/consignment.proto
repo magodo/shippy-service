@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package consignment; 
 
-service ShippingService {
-  rpc CreateConsignment(Consignment) returns (Response) {}
+service ConsignmentService {
+  rpc Create(Consignment) returns (Response) {}
   rpc GetConsignments(GetRequest) returns (Response) {}
 }
 

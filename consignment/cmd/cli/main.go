@@ -52,7 +52,7 @@ func main() {
 		}),
 	)
 
-	client := pb.NewShippingService("shippy.srv.consignment", service.Client())
+	client := pb.NewConsignmentService("shippy.srv.consignment", service.Client())
 
 	consignment, err := parseFile(file)
 
@@ -61,7 +61,7 @@ func main() {
 	}
 
 	ctx := metadata.NewContext(context.Background(), metadata.Metadata{"Token": token})
-	r, err := client.CreateConsignment(ctx, consignment)
+	r, err := client.Create(ctx, consignment)
 	if err != nil {
 		log.Fatalf("Could not greet: %v", err)
 	}
